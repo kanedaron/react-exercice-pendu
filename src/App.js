@@ -42,15 +42,23 @@ constructor(props) {
 }
 
 componentDidMount() {
-  fetch("https://random-word-api.herokuapp.com/word")
-    .then(res => res.json())
-    .then(
-      (result) => {
-        this.setState({
-          isLoaded: true,
-          phrase: JSON.stringify(result[0])
-        });
-      })
+  
+  //Orignal use of API to fetch words from dictionnary,
+  //removed because i could'nt find a french dictionnary to test accented words
+
+  // fetch("https://random-word-api.herokuapp.com/word")
+  //   .then(res => res.json())
+  //   .then(
+  //     (result) => {
+  //       this.setState({
+  //         isLoaded: true,
+  //         phrase: JSON.stringify(result[0])
+  //       });
+  //     })
+
+let arr=["événement","hôpital","mûres","Héraclès","mât","marâtre"]
+let brr=arr[Math.floor(Math.random() * arr.length)]
+this.setState({phrase:brr,isLoaded:true})
 }
 
 
@@ -79,7 +87,14 @@ this.setState({ lettrestrouvees:trouve,guesses:essais,victoire:victoire1 })
 }
 
 xsetdisplay = (phrase, usedLetters) => {  
-  return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )}
+  return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )
+  .replace(/é|è|ê/g,    (letter) => (usedLetters.has("e") ? letter : '_')  )
+  .replace(/â/g,    (letter) => (usedLetters.has("a") ? letter : '_')  )
+  .replace(/î/g,    (letter) => (usedLetters.has("i") ? letter : '_')  )
+  .replace(/ô/g,    (letter) => (usedLetters.has("o") ? letter : '_')  )
+  .replace(/û/g,    (letter) => (usedLetters.has("u") ? letter : '_')  )
+}
+  //TODO : 1/ remove " character 2/ remplacer é `è par e 3/ enlever el circonflexe
 testvictoire = (phrase) => {return !phrase.includes('_')}
   
 // on "nettoie" le clavier en enlevant les lettres déja trouvées
