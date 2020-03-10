@@ -88,6 +88,7 @@ this.setState({ lettrestrouvees:trouve,guesses:essais,victoire:victoire1 })
 
 xsetdisplay = (phrase, usedLetters) => {  
   return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )
+  .replace(/"/g,"")
   .replace(/é|è|ê/g,    (letter) => (usedLetters.has("e") ? letter : '_')  )
   .replace(/â/g,    (letter) => (usedLetters.has("a") ? letter : '_')  )
   .replace(/î/g,    (letter) => (usedLetters.has("i") ? letter : '_')  )
