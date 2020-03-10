@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 // Produit une représentation textuelle de l’état de la partie,
 // chaque lettre non découverte étant représentée par un _underscore_.
 // (CSS assurera de l’espacement entre les lettres pour mieux
 // visualiser le tout).
-const phrase = "anticonstitutionnellement"
+
+// ancienne phrase statique
+// const phrase = "anticonstitutionnellement"
+
 // const usedLetters = new Set(["c","t"]);
 // function setdisplay(phrase, usedLetters) {  
 //   return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )}
@@ -34,7 +37,20 @@ class Pendu extends Component {
 
 constructor(props) {
   super(props)
-  this.state = { lettrestrouvees: new Set(),guesses: 0 }
+  this.state = { lettrestrouvees: new Set(),guesses: 0,isLoaded: false }
+  
+}
+
+componentDidMount() {
+  fetch("https://random-word-api.herokuapp.com/word")
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          isLoaded: true,
+          phrase: JSON.stringify(result[0])
+        });
+      })
 }
 
 
@@ -46,9 +62,9 @@ const trouve = this.state.lettrestrouvees.add(letter)
 let point = 0
 var essais = 0
 console.log ("avant for",point,essais)
-  for (const lettre in phrase)
+  for (const lettre in this.state.phrase)
     {console.log ("aprés for",point,essais,lettre)
-    if (phrase[lettre]===letter) point++}
+    if (this.state.phrase[lettre]===letter) point++}
     console.log ("aprés if",point,essais)
 if (point > 0) essais = this.state.guesses+2
 else essais = this.state.guesses-1
@@ -105,11 +121,18 @@ componentWillUpdate() {
 
 
     render () {
-      
+      // console.log("premier",this.state.phrase)
+      if (!this.state.isLoaded) {
+        return <div>Chargement…</div>;
+      } else {
+            const { lettrestrouvees,guesses,phrase } = this.state;
+            // console.log("second",phrase)
+            // xsetdisplay = (phrase, usedLetters) => {  
+            //     return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )}
       return (
           <div>
-              <p className="kdisplay">{this.xsetdisplay(phrase,this.state.lettrestrouvees)}</p>
-              <Compteur tentatives={this.state.guesses} />
+              <p className="kdisplay">{this.xsetdisplay(phrase,lettrestrouvees)}</p>
+              <Compteur tentatives={guesses} />
               <p>1 lettre trouvé = 2 points<br/>1 mauvaise réponse = -1 point</p>
               <p className="clavier">
 
@@ -131,8 +154,8 @@ componentWillUpdate() {
 
               </p>
           </div>
-       )
-
+              )
+                  }
     }
 
 }
