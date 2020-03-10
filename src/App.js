@@ -43,22 +43,23 @@ constructor(props) {
 
 componentDidMount() {
   
-  //Orignal use of API to fetch words from dictionnary,
-  //removed because i could'nt find a french dictionnary to test accented words
+  //Orignal use of API to fetch words from dictionnary
 
-  // fetch("https://random-word-api.herokuapp.com/word")
-  //   .then(res => res.json())
-  //   .then(
-  //     (result) => {
-  //       this.setState({
-  //         isLoaded: true,
-  //         phrase: JSON.stringify(result[0])
-  //       });
-  //     })
+  fetch("https://random-word-api.herokuapp.com/word")
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          isLoaded: true,
+          phrase: JSON.stringify(result[0])
+        });
+      })
 
-let arr=["événement","hôpital","mûres","Héraclès","mât","marâtre"]
-let brr=arr[Math.floor(Math.random() * arr.length)]
-this.setState({phrase:brr,isLoaded:true})
+// List of french words in order to test diacritic smoothing
+// let arr=["événement","hôpital","mûres","Héraclès","mât","marâtre"]
+// let brr=arr[Math.floor(Math.random() * arr.length)]
+// this.setState({phrase:brr,isLoaded:true})
+
 }
 
 
