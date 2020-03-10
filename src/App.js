@@ -37,7 +37,7 @@ class Pendu extends Component {
 
 constructor(props) {
   super(props)
-  this.state = { lettrestrouvees: new Set(),guesses: 0,isLoaded: false }
+  this.state = { lettrestrouvees: new Set(),guesses: 0,isLoaded: false ,victoire: false}
   
 }
 
@@ -61,7 +61,7 @@ appui = (letter) => {
 const trouve = this.state.lettrestrouvees.add(letter)
 let point = 0
 var essais = 0
-console.log ("avant for",point,essais)
+// console.log ("avant for",point,essais)
   for (const lettre in this.state.phrase)
     {console.log ("aprés for",point,essais,lettre)
     if (this.state.phrase[lettre]===letter) point++}
@@ -70,7 +70,9 @@ if (point > 0) essais = this.state.guesses+2
 else essais = this.state.guesses-1
 
 // const essais = this.state.guesses+1
-this.setState({ lettrestrouvees:trouve,guesses:essais })
+const victoire1 = this.testvictoire(this.xsetdisplay(this.state.phrase,this.state.lettrestrouvees))
+console.log("victoire",victoire1)
+this.setState({ lettrestrouvees:trouve,guesses:essais,victoire:victoire1 })
 
 // Protocole de test
 // console.log("j'appuie sur ",this.state.lettrestrouvees)
@@ -78,11 +80,13 @@ this.setState({ lettrestrouvees:trouve,guesses:essais })
 
 xsetdisplay = (phrase, usedLetters) => {  
   return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )}
-
+testvictoire = (phrase) => {return !phrase.includes('_')}
+  
 // on "nettoie" le clavier en enlevant les lettres déja trouvées
 componentWillUpdate() {
+  
   let axe = this.state.lettrestrouvees;
-  console.log("machin",axe,"machineine");
+  // console.log("machin",axe,"machineine");
   for (const item of axe) {
     
     // for (const place of Dispo1) {
@@ -124,11 +128,21 @@ componentWillUpdate() {
       // console.log("premier",this.state.phrase)
       if (!this.state.isLoaded) {
         return <div>Chargement…</div>;
-      } else {
-            const { lettrestrouvees,guesses,phrase } = this.state;
+      } else if (this.state.victoire) {
+        
+      return (
+        
+          <div>
+            <p className="totalvictoire">Vous avez gagné !!!!!!<br/><p className="subtitle">le mot était {this.state.phrase}</p></p>
+          </div>
+              )
+            
+
             // console.log("second",phrase)
             // xsetdisplay = (phrase, usedLetters) => {  
             //     return phrase.replace(/\w/g,    (letter) => (usedLetters.has(letter) ? letter : '_')  )}
+      } else {
+        const { lettrestrouvees,guesses,phrase } = this.state;
       return (
           <div>
               <p className="kdisplay">{this.xsetdisplay(phrase,lettrestrouvees)}</p>
