@@ -111,7 +111,7 @@ class Pendu extends Component {
   };
 
   // on "nettoie" le clavier en enlevant les lettres déja trouvées
-  componentWillUpdate() {
+  componentDidUpdate() {
     let axe = this.state.lettrestrouvees;
     // console.log("machin",axe,"machineine");
     for (const item of axe) {
